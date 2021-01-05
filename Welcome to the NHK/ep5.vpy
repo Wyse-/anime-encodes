@@ -2,6 +2,8 @@ import vapoursynth as vs
 from vapoursynth import core
 import fvsfunc as fvf
 import havsfunc as haf
+import mvsfunc as mvf
+import functools
 
 DEBUG_MODE = False
 
@@ -48,15 +50,36 @@ def filter_clip(clip, is_nced = False):
 		cropped_clip = core.std.Crop(filterable_clip, bottom=2, top=2, left=4, right=2)
 	else:	
 		cropped_clip = core.std.Crop(filterable_clip, top=4, left=4, right=2)
-	fixed_edge_clip = haf.FixColumnBrightnessProtect2(cropped_clip, 713, 22)
+	filtering_done_clip = fvf.Depth(cropped_clip, 8)
+	return filtering_done_clip;
+	
+def edgefix_clip(clip):
+	filterable_clip = fvf.Depth(clip, 16)
+	fixed_edge_clip = haf.FixColumnBrightnessProtect2(filterable_clip, 713, 22)
 	fixed_edge_clip = haf.FixColumnBrightnessProtect2(fixed_edge_clip, 712, 2)
 	fixed_edge_clip = haf.FixColumnBrightnessProtect2(fixed_edge_clip, 711, -2, 6)
-	filtering_done_clip = fvf.Depth(fixed_edge_clip, 8)				
+	filtering_done_clip = fvf.Depth(fixed_edge_clip, 8)
 	return filtering_done_clip;
 	
 def decomb_clip_whole_frame(clip, frame, order=1):
 	deint = core.tdm.TDeintMod(clip, order=order, edeint=core.nnedi3.nnedi3(clip, field=order))
 	return core.std.Trim(clip, 0, frame - 1) + core.std.Trim(deint, frame, frame) + core.std.Trim(clip, frame + 1)
+	
+def conditional_edgefix(n, f, clip, clip_edgefix):
+	if f.props['PlaneStatsAverage'] < 0.11:
+		clip_edgefix = core.std.SetFrameProp(clip_edgefix, prop='LeftLuma', floatval=f.props['PlaneStatsAverage'])
+		return clip_edgefix
+	else:
+		clip = core.std.SetFrameProp(clip, prop='LeftLuma', floatval=f.props['PlaneStatsAverage'])
+		return clip
+		
+def automated_edgefix(clip, unfiltered_clip):
+	leftmost_edge = mvf.GetPlane(unfiltered_clip, 0)
+	leftmost_edge = leftmost_edge.std.CropAbs(width=1, height=leftmost_edge.height, left=0)
+	leftmost_edge = leftmost_edge.std.PlaneStats()
+	postprocessed_clip = core.std.FrameEval(output_clip, functools.partial(conditional_edgefix, clip=output_clip, clip_edgefix=edgefix_clip(output_clip)), prop_src=leftmost_edge)
+	return postprocessed_clip;
+	
 
 source = core.lsmas.LWLibavSource(source='/home/wyse/Videos/NHK_NI_YOUKOSO_01/nhk_ep_5.mkv')
 nced = core.lsmas.LWLibavSource(source='/home/wyse/Videos/NHK_NI_YOUKOSO_01/nhk_ncop_nced.mkv')
@@ -123,12 +146,16 @@ fadefixed_clip = manual_smartfademod(fadefixed_clip, 26144, 26148)
 fadefixed_clip = manual_smartfademod(fadefixed_clip, 26171, 26176)
 fadefixed_clip = manual_smartfademod(fadefixed_clip, 26194, 26198)
 fadefixed_clip = manual_smartfademod(fadefixed_clip, 26224, 26235)
-output_clip = manual_smartfademod(fadefixed_clip, 28005, 28016)
+fadefixed_clip = manual_smartfademod(fadefixed_clip, 28005, 28016)
 # Manual Smartfademod End
+
+# Automated Edgefix Start
+output_clip = automated_edgefix(fadefixed_clip, decimated_clip)
+# Automated Edgefix End
 
 output_clip = fvf.Depth(output_clip, 10)
 
 if DEBUG_MODE:
-	output_clip = core.text.FrameProps(output_clip, props=['VDecimateDrop'])
+	output_clip = core.text.FrameProps(output_clip, props=['VDecimateDrop', 'LeftLuma'])
 
 output_clip.set_output()
