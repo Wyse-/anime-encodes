@@ -48,10 +48,7 @@ def filter_clip(clip, is_nced = False):
 		cropped_clip = core.std.Crop(filterable_clip, bottom=2, top=2, left=4, right=2)
 	else:	
 		cropped_clip = core.std.Crop(filterable_clip, top=4, left=4, right=2)
-	fixed_edge_clip = haf.FixColumnBrightnessProtect2(cropped_clip, 713, 22)
-	fixed_edge_clip = haf.FixColumnBrightnessProtect2(fixed_edge_clip, 712, 2)
-	fixed_edge_clip = haf.FixColumnBrightnessProtect2(fixed_edge_clip, 711, -2, 6)
-	filtering_done_clip = fvf.Depth(fixed_edge_clip, 8)
+	filtering_done_clip = fvf.Depth(cropped_clip, 8)
 	return filtering_done_clip;
 
 
