@@ -53,31 +53,61 @@ def filter_clip(clip, is_nced = False):
 	filtering_done_clip = fvf.Depth(cropped_clip, 8)
 	return filtering_done_clip;
 	
-def edgefix_clip(clip):
-	filterable_clip = fvf.Depth(clip, 16)
-	fixed_edge_clip = haf.FixColumnBrightnessProtect2(filterable_clip, 713, 22)
-	fixed_edge_clip = haf.FixColumnBrightnessProtect2(fixed_edge_clip, 712, 2)
-	fixed_edge_clip = haf.FixColumnBrightnessProtect2(fixed_edge_clip, 711, -2, 6)
-	filtering_done_clip = fvf.Depth(fixed_edge_clip, 8)
-	return filtering_done_clip;
-	
 def decomb_clip_whole_frame(clip, frame, order=1):
 	deint = core.tdm.TDeintMod(clip, order=order, edeint=core.nnedi3.nnedi3(clip, field=order))
 	return core.std.Trim(clip, 0, frame - 1) + core.std.Trim(deint, frame, frame) + core.std.Trim(clip, frame + 1)
+
+def edgefix_clip(clip, additional=False):
+	filterable_clip = fvf.Depth(clip, 16)
+	fixed_edge_clip = haf.FixColumnBrightnessProtect2(filterable_clip, 713, 22)
+	if additional:
+		fixed_edge_clip = haf.FixColumnBrightnessProtect2(fixed_edge_clip, 712, 2)
+		fixed_edge_clip = haf.FixColumnBrightnessProtect2(fixed_edge_clip, 711, -2, 6)
+	filtering_done_clip = fvf.Depth(fixed_edge_clip, 8)
+	return filtering_done_clip;
+
+def conditional_edgefix(n, f, clip, clip_edgefix, clip_edgefix_additional):
+	#rightdarkest_edge = 0
+	#rightdark_edge = 1
+	#rightbright_edge = 2
+	#leftmost_edge = 3
+	edgefix_value = f[1].props['PlaneStatsAverage'] - f[0].props['PlaneStatsAverage']
 	
-def conditional_edgefix(n, f, clip, clip_edgefix):
-	if f.props['PlaneStatsAverage'] < 0.11:
-		clip_edgefix = core.std.SetFrameProp(clip_edgefix, prop='LeftLuma', floatval=f.props['PlaneStatsAverage'])
-		return clip_edgefix
+	if f[3].props['PlaneStatsAverage'] < 0.11 and edgefix_value > 0.009:
+		clip_edgefix = core.std.SetFrameProp(clip_edgefix, prop='LeftLuma', floatval=f[3].props['PlaneStatsAverage'])
+		clip_edgefix = core.std.SetFrameProp(clip_edgefix, prop='EdgeFix', floatval=edgefix_value)
+		additional_diff = f[2].props['PlaneStatsAverage'] - f[1].props['PlaneStatsAverage']
+		clip_edgefix = core.std.SetFrameProp(clip_edgefix, prop='EdgeFixAdditional', floatval=additional_diff)
+		if additional_diff > 0.002:
+			clip_edgefix_additional = core.std.SetFrameProp(clip_edgefix_additional, prop='LeftLuma', floatval=f[3].props['PlaneStatsAverage'])
+			clip_edgefix_additional = core.std.SetFrameProp(clip_edgefix_additional, prop='EdgeFix', floatval=edgefix_value)
+			clip_edgefix_additional = core.std.SetFrameProp(clip_edgefix_additional, prop='EdgeFixAdditional', floatval=additional_diff)
+			return clip_edgefix_additional
+		else:
+			return clip_edgefix
 	else:
-		clip = core.std.SetFrameProp(clip, prop='LeftLuma', floatval=f.props['PlaneStatsAverage'])
+		clip = core.std.SetFrameProp(clip, prop='LeftLuma', floatval=f[3].props['PlaneStatsAverage'])
+		clip = core.std.SetFrameProp(clip, prop='EdgeFix', floatval=edgefix_value)
 		return clip
 		
-def automated_edgefix(clip, unfiltered_clip):
+def automated_edgefix(clip, unfiltered_clip):	
+	rightdarkest_edge = mvf.GetPlane(unfiltered_clip, 0)
+	rightdarkest_edge = rightdarkest_edge.std.CropAbs(width=1, height=rightdarkest_edge.height, left=717)
+	rightdarkest_edge = rightdarkest_edge.std.PlaneStats()
+	
+	rightdark_edge = mvf.GetPlane(unfiltered_clip, 0)
+	rightdark_edge = rightdark_edge.std.CropAbs(width=1, height=rightdark_edge.height, left=716)
+	rightdark_edge = rightdark_edge.std.PlaneStats()	
+	
+	rightbright_edge = mvf.GetPlane(unfiltered_clip, 0)
+	rightbright_edge = rightbright_edge.std.CropAbs(width=1, height=rightbright_edge.height, left=715)
+	rightbright_edge = rightbright_edge.std.PlaneStats()
+	
 	leftmost_edge = mvf.GetPlane(unfiltered_clip, 0)
 	leftmost_edge = leftmost_edge.std.CropAbs(width=1, height=leftmost_edge.height, left=0)
 	leftmost_edge = leftmost_edge.std.PlaneStats()
-	postprocessed_clip = core.std.FrameEval(output_clip, functools.partial(conditional_edgefix, clip=output_clip, clip_edgefix=edgefix_clip(output_clip)), prop_src=leftmost_edge)
+	
+	postprocessed_clip = core.std.FrameEval(clip, functools.partial(conditional_edgefix, clip=clip, clip_edgefix=edgefix_clip(clip), clip_edgefix_additional=edgefix_clip(clip, True)), prop_src=[rightdarkest_edge, rightdark_edge, rightbright_edge, leftmost_edge])
 	return postprocessed_clip;
 	
 
@@ -85,6 +115,11 @@ source = core.lsmas.LWLibavSource(source='/home/wyse/Videos/NHK_NI_YOUKOSO_01/nh
 nced = core.lsmas.LWLibavSource(source='/home/wyse/Videos/NHK_NI_YOUKOSO_01/nhk_ncop_nced.mkv')
 decimated_clip = ivtc_clip_ovr(source)
 filtered_clip = filter_clip(decimated_clip)
+
+# Automated Edgefix Start
+filtered_clip = automated_edgefix(filtered_clip, decimated_clip)
+# Automated Edgefix End
+
 filtered_clip = replace_frame_with_next(filtered_clip, 323)
 filtered_clip = replace_frame_with_next(filtered_clip, 8211)
 filtered_clip = decomb_clip_whole_frame(filtered_clip, 8806)
@@ -146,16 +181,14 @@ fadefixed_clip = manual_smartfademod(fadefixed_clip, 26144, 26148)
 fadefixed_clip = manual_smartfademod(fadefixed_clip, 26171, 26176)
 fadefixed_clip = manual_smartfademod(fadefixed_clip, 26194, 26198)
 fadefixed_clip = manual_smartfademod(fadefixed_clip, 26224, 26235)
-fadefixed_clip = manual_smartfademod(fadefixed_clip, 28005, 28016)
+output_clip = manual_smartfademod(fadefixed_clip, 28005, 28016)
 # Manual Smartfademod End
-
-# Automated Edgefix Start
-output_clip = automated_edgefix(fadefixed_clip, decimated_clip)
-# Automated Edgefix End
 
 output_clip = fvf.Depth(output_clip, 10)
 
 if DEBUG_MODE:
 	output_clip = core.text.FrameProps(output_clip, props=['VDecimateDrop', 'LeftLuma'])
+
+output_clip = core.text.FrameProps(output_clip, props=['LeftLuma', 'EdgeFix', 'EdgeFixAdditional'])
 
 output_clip.set_output()
