@@ -110,8 +110,7 @@ fadefixed_clip = manual_smartfademod(fadefixed_clip, 12769, 12770)
 fadefixed_clip = manual_smartfademod(fadefixed_clip, 13050, 13059)
 fadefixed_clip = manual_smartfademod(fadefixed_clip, 19152, 19175)
 fadefixed_clip = manual_smartfademod(fadefixed_clip, 26695, 26706)
-fadefixed_clip = manual_smartfademod(fadefixed_clip, 29695, 29719)
-output_clip = full_clip
+output_clip = manual_smartfademod(fadefixed_clip, 29695, 29719)
 # Manual Smartfademod End
 
 output_clip = fvf.Depth(output_clip, 10)
