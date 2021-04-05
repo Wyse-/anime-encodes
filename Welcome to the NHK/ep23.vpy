@@ -84,8 +84,6 @@ full_clip = decomb_clip_whole_frame(full_clip, 32172)
 full_clip = decomb_clip_whole_frame(full_clip, 32294)
 full_clip = decomb_clip_whole_frame(full_clip, 32463)
 full_clip = replace_frame_with_previous(full_clip, 34264)
-#filtered_credits = 
-
 
 # Manual Smartfademod Start
 fadefixed_clip = manual_smartfademod(full_clip, 9923, 9970)

@@ -4,7 +4,7 @@ import fvsfunc as fvf
 import havsfunc as haf
 
 DEBUG_MODE = False
-	
+
 def manual_smartfademod(clip, start_frame, end_frame):
 	fixed_fade_clip = haf.smartfademod(clip, tff=True, threshold=0)
 	return core.std.Trim(clip, 0, start_frame - 1) + core.std.Trim(fixed_fade_clip, start_frame, end_frame) + core.std.Trim(clip, end_frame + 1)
@@ -42,6 +42,11 @@ def decomb_clip_whole_frame(clip, frame, order=1):
 	deint = core.tdm.TDeintMod(clip, order=order, edeint=core.nnedi3.nnedi3(clip, field=order))
 	return core.std.Trim(clip, 0, frame - 1) + core.std.Trim(deint, frame, frame) + core.std.Trim(clip, frame + 1)
 
+def decomb_clip_whole_frame_interlaced_transition(clip, frame_start, frame_end, order=1):
+	deint = core.tdm.TDeintMod(clip, order=order, edeint=core.nnedi3.nnedi3(clip, field=order), length=6, athresh=6)
+	return core.std.Trim(clip, 0, frame_start - 1) + core.std.Trim(deint, frame_start, frame_end) + core.std.Trim(clip, frame_end + 1)
+
+
 source = core.lsmas.LWLibavSource(source='/home/wyse/Videos/NHK_NI_YOUKOSO_01/nhk_ep_18.mkv')
 decimated_clip = ivtc_clip_ovr(source)	
 filtered_clip = filter_clip(decimated_clip)
@@ -55,7 +60,8 @@ filtered_clip = replace_frame_with_next(filtered_clip, 25733)
 filtered_clip = replace_frame_with_next(filtered_clip, 29606)
 filtered_clip = decomb_clip_whole_frame(filtered_clip, 30393)
 
-# TODO: handle combed line during transition in frames 24854-24899
+# TODO: there may be a better way to handle the combed line during transition in frames 24854-24899
+filtered_clip = decomb_clip_whole_frame_interlaced_transition(filtered_clip, 24854, 24889)
 
 # Manual Smartfademod Start
 fadefixed_clip = manual_smartfademod(filtered_clip, 2171, 2206)

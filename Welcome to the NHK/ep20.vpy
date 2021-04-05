@@ -41,6 +41,10 @@ def filter_clip(clip, is_nced = False):
 def decomb_clip_whole_frame(clip, frame, order=1):
 	deint = core.tdm.TDeintMod(clip, order=order, edeint=core.nnedi3.nnedi3(clip, field=order))
 	return core.std.Trim(clip, 0, frame - 1) + core.std.Trim(deint, frame, frame) + core.std.Trim(clip, frame + 1)
+	
+def decomb_clip_whole_frame_interlaced_transition(clip, frame_start, frame_end, order=1):
+	deint = core.tdm.TDeintMod(clip, order=order, edeint=core.nnedi3.nnedi3(clip, field=order), length=6, athresh=6)
+	return core.std.Trim(clip, 0, frame_start - 1) + core.std.Trim(deint, frame_start, frame_end) + core.std.Trim(clip, frame_end + 1)
 
 source = core.lsmas.LWLibavSource(source='/home/wyse/Videos/NHK_NI_YOUKOSO_01/nhk_ep_20.mkv')
 decimated_clip = ivtc_clip_ovr(source)	
@@ -78,7 +82,8 @@ filtered_clip = replace_frame_with_previous(filtered_clip, 28568)
 filtered_clip = replace_frame_with_next(filtered_clip, 28909)
 filtered_clip = replace_frame_with_next(filtered_clip, 33806)
 
-# TODO: handle combed line during transition in frames 18472-18507
+# TODO: there may be a better way to handle the combed line during transition in frames 18472-18507
+filtered_clip = decomb_clip_whole_frame_interlaced_transition(filtered_clip, 18472, 18507)
 
 # Manual Smartfademod Start
 fadefixed_clip = manual_smartfademod(filtered_clip, 2170, 2195)
