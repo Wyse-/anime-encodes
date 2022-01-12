@@ -35,6 +35,7 @@ src = c.std.DeleteFrames(clip=src, frames=[2,8,10,19,24,28,33,38,41,48,51,58,63,
 src = c.fb.FillBorders(clip=src, left=0, right=0, top=2, bottom=0, mode="fillmargins", interlaced=0)
 src = manual_smartfademod(src, 2353, 2393)
 src = manual_smartfademod(src, 2569, 2613)
+src = manual_smartfademod(src, 13369, 13392)
 src = manual_smartfademod(src, 15403, 15537)
 src = manual_smartfademod(src, 23745, 23876)
 src = manual_smartfademod(src, 25248, 25260)
