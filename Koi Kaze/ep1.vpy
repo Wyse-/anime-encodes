@@ -99,4 +99,5 @@ src = c.std.CropRel(clip=src, left=6, top=0, right=4, bottom=0)
 
 src = c.std.SetFrameProp(clip=src, prop='_FieldBased', intval=1)
 src = c.resize.Bicubic(clip=src, format=c.query_video_format(src.format.color_family, vs.INTEGER, 10, src.format.subsampling_w, src.format.subsampling_h).id)
+src = c.std.AssumeFPS(clip=src, fpsnum=24000, fpsden=1001)
 src.set_output()
