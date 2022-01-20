@@ -76,8 +76,8 @@ src_r1 = manual_smartfademod(src_r1, 31218, 31349)
 src_r1 = manual_smartfademod(src_r1, 33338, 33406)
 src_r1 = manual_smartfademod(src_r1, 33407, 33413, True)
 src_r1 = manual_smartfademod(src_r1, 33498, 33510)
-src = handle_scrolling_text(src, 33535, 33746)
-src_r1 = handle_scrolling_text(src_r1, 33535, 33746)
+#src = handle_scrolling_text(src, 33535, 33746)
+#src_r1 = handle_scrolling_text(src_r1, 33535, 33746)
 
 src = rektlvls(src, colnum=[715], colval=[-2])
 src = c.std.SetFieldBased(src, 0)
@@ -92,6 +92,7 @@ src_fixed_bottom_rows_main = rektlvls(src, rownum=[478, 479], rowval=[7, 7])
 src_fixed_bottom_rows_ed = rektlvls(src, rownum=[478, 479], rowval=[4, 4])
 src = c.std.Trim(src_fixed_bottom_rows_main, 0, 31277 - 1) + c.std.Trim(src_fixed_bottom_rows_ed, 31277, 33445) + c.std.Trim(src_fixed_bottom_rows_main, 33445 + 1)
 
+src = c.std.Trim(src, 2282, 2398) + c.std.Trim(src, 4358, 4494) + c.std.Trim(src, 6065, 6200) + c.std.Trim(src, 9954, 10428) + c.std.Trim(src, 18359, 18611)
 src = c.std.AssumeFPS(clip=src, fpsnum=24000, fpsden=1001)
 src.set_output()
 
