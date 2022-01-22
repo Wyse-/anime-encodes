@@ -4,6 +4,7 @@
 import vapoursynth as vs
 import havsfunc as haf
 import lvsfunc as lvf
+import vardefunc as vdf
 from rekt import rektlvls
 
 
@@ -75,7 +76,7 @@ src = rektlvls(src, colnum=[715], colval=[-2])
 src = c.std.SetFieldBased(src, 0)
 src_r1 = c.std.SetFieldBased(src_r1, 0)
 src = c.resize.Spline36(clip=src, width=864, height=480, format=c.query_video_format(src.format.color_family, vs.INTEGER, 10, src.format.subsampling_w, src.format.subsampling_h).id)
-src_r1 = c.resize.Spline36(clip=src_r1, width=864, height=480, format=c.query_video_format(src.format.color_family, vs.INTEGER, 10, src.format.subsampling_w, src.format.subsampling_h).id)
+src_r1 = c.resize.Spline36(clip=src_r1, width=864, height=480, format=c.query_video_format(src_r1.format.color_family, vs.INTEGER, 10, src_r1.format.subsampling_w, src_r1.format.subsampling_h).id)
 src = c.std.CropRel(clip=src, left=6, top=2, right=4, bottom=0)
 src_r1 = c.std.CropRel(clip=src_r1, left=6, top=0, right=4, bottom=0)
 src = haf.Overlay(src_r1, src)
@@ -86,4 +87,3 @@ src = c.std.Trim(src_fixed_bottom_rows_main, 0, 31277 - 1) + c.std.Trim(src_fixe
 
 src = c.std.AssumeFPS(clip=src, fpsnum=24000, fpsden=1001)
 src.set_output()
-
