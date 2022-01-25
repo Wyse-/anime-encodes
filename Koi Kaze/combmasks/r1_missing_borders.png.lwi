@@ -1,8 +1,8 @@
 <LSMASHWorksIndexVersion=0.0.2.0>
 <LibavReaderIndexFile=16>
 <InputFilePath>./combmasks/r1_missing_borders.png</InputFilePath>
-<FileSize=7643>
-<FileHash=0xfe1d73232caec700>
+<FileSize=7856>
+<FileHash=0x60f55318212a8046>
 <LibavReaderIndex=0x00000100,1,png_pipe>
 <ActiveVideoStreamIndex>+0000000000</ActiveVideoStreamIndex>
 <ActiveAudioStreamIndex>-0000000002</ActiveAudioStreamIndex>
