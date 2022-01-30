@@ -1,8 +1,8 @@
 <LSMASHWorksIndexVersion=0.0.2.0>
 <LibavReaderIndexFile=16>
-<InputFilePath>./combmasks/prev_waves.png</InputFilePath>
-<FileSize=2240>
-<FileHash=0x596cc3c4ff83e785>
+<InputFilePath>./combmasks/ep9_title.png</InputFilePath>
+<FileSize=491986>
+<FileHash=0x7e472876f5484c36>
 <LibavReaderIndex=0x00000100,1,png_pipe>
 <ActiveVideoStreamIndex>+0000000000</ActiveVideoStreamIndex>
 <ActiveAudioStreamIndex>-0000000002</ActiveAudioStreamIndex>
