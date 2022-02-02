@@ -38,11 +38,11 @@ c = vs.core
 src = c.lsmas.LWLibavSource(r'/media/wyse/Media III/Raw DVDs/KOIKAZE/ep10.mkv')
 src_r1 = c.lsmas.LWLibavSource(r'/media/wyse/Media III/Raw DVDs/KOIKAZE_R1/10.mkv')
 src_r1_nced_03 = c.lsmas.LWLibavSource(r'/media/wyse/Media III/Raw DVDs/KOIKAZE_R1/koi_kaze_r1_nced_03.mkv')
-src_r1 = c.std.Trim(src_r1, 0, 39095) + c.std.Trim(src_r1, 42304, 42321) + c.std.Trim(src_r1_nced_03, 0) + c.std.Trim(src_r1, 41797)
+src_r1 = c.std.Trim(src_r1, 0, 39081) + c.std.Trim(src_r1_nced_03, 0) + c.std.Trim(src_r1, 41783)
 src_r1 = src_r1.resize.Point(range_in=1, range=0)
 
-src = c.std.Splice(clips=[src[0:42305],])
-src_r1 = c.std.Splice(clips=[src_r1[0:42305],])
+src = c.std.Splice(clips=[src[0:42273],])
+src_r1 = c.std.Splice(clips=[src_r1[0:42273],])
 
 src = c.fh.FieldHint(clip=src, tff=1, matches=wobbly_matches)
 src_r1 = c.fh.FieldHint(clip=src_r1, tff=1, matches=wobbly_matches)
@@ -96,10 +96,16 @@ clean_square_replaced_frames_clip = c.std.Trim(src, 0, 30344 - 1) + c.std.Trim(s
 merged_clip = c.std.MaskedMerge(src, clean_square_replaced_frames_clip, blinking_square_mask)
 src = c.std.Trim(src, 0, 30344 - 1) + c.std.Trim(merged_clip, 30344, 30377) + c.std.Trim(src, 30377 + 1)
 
-src = c.std.CropRel(clip=src, left=4, top=2, right=4, bottom=0)
-src = rektlvls(src, colnum=[711], colval=[-2])
+src = rektlvls(src, colnum=[715], colval=[-2])
+src = c.std.RemoveFrameProps(src, "_FieldBased")
+src_r1 = c.std.RemoveFrameProps(src_r1, "_FieldBased")
+src = c.resize.Spline36(clip=src, width=864, height=480, format=c.query_video_format(src.format.color_family, vs.INTEGER, 10, src.format.subsampling_w, src.format.subsampling_h).id)
+src_r1 = c.resize.Spline36(clip=src_r1, width=864, height=480, format=c.query_video_format(src_r1.format.color_family, vs.INTEGER, 10, src_r1.format.subsampling_w, src_r1.format.subsampling_h).id)
+src = c.std.CropRel(clip=src, left=6, top=2, right=4, bottom=0)
+src_r1 = c.std.CropRel(clip=src_r1, left=6, top=0, right=4, bottom=0)
+src = haf.Overlay(src_r1, src)
 
-src = c.std.SetFrameProp(clip=src, prop='_FieldBased', delete=True)
-src = c.resize.Bicubic(clip=src, format=c.register_format(src.format.color_family, vs.INTEGER, 10, src.format.subsampling_w, src.format.subsampling_h).id)
+src = rektlvls(src, rownum=[478, 479], rowval=[7, 7])
 
+src = c.std.AssumeFPS(clip=src, fpsnum=24000, fpsden=1001)
 src.set_output()
