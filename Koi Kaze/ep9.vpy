@@ -7,6 +7,43 @@ import lvsfunc as lvf
 from rekt import rektlvls
 import adjust
 
+def dec_txt60mc(src, frame_ref, srcbob=False, draft=False, tff=None, opencl=False, device=None):
+    if not isinstance(src, vs.VideoNode):
+        raise vs.Error('dec_txt60mc: this is not a clip')
+
+    if not (srcbob or isinstance(tff, bool)):
+        raise vs.Error("dec_txt60mc: 'tff' must be set when srcbob=False. Setting tff to true means top field first and false means bottom field first")
+
+    field_ref = frame_ref if srcbob else frame_ref * 2
+    field_ref %= 5
+    invpos = (5 - field_ref) % 5
+    pel = 1 if draft else 2
+    blksize = 16 if src.width > 1024 or src.height > 576 else 8
+    overlap = blksize // 2
+
+    if srcbob:
+        last = src
+    elif draft:
+        last = haf.Bob(src, tff=tff)
+    else:
+        last = haf.QTGMC(src, TR0=1, TR1=1, TR2=1, SourceMatch=3, Lossless=2, TFF=tff, opencl=opencl, device=device)
+
+    clean = last.std.SelectEvery(cycle=5, offsets=[4 - invpos])
+    if invpos > 2:
+        jitter = vs.core.std.AssumeFPS(last.std.Trim(length=1) * 2 + last.std.SelectEvery(cycle=5, offsets=[6 - invpos, 7 - invpos]), fpsnum=24000, fpsden=1001)
+    elif invpos > 1:
+        jitter = vs.core.std.AssumeFPS(last.std.Trim(length=1) + last.std.SelectEvery(cycle=5, offsets=[2 - invpos, 6 - invpos]), fpsnum=24000, fpsden=1001)
+    else:
+        jitter = last.std.SelectEvery(cycle=5, offsets=[1 - invpos, 2 - invpos])
+    jsup_pre = haf.DitherLumaRebuild(jitter, s0=1).mv.Super(pel=pel)
+    jsup = jitter.mv.Super(pel=pel, levels=1)
+    vect_f = jsup_pre.mv.Analyse(blksize=blksize, isb=False, delta=1, overlap=overlap)
+    vect_b = jsup_pre.mv.Analyse(blksize=blksize, isb=True, delta=1, overlap=overlap)
+    comp = vs.core.mv.FlowInter(jitter, jsup, vect_b, vect_f)
+    fixed = comp[::2]
+    last = vs.core.std.Interleave([fixed, clean])
+    return last.std.Trim(first=invpos // 3)
+
 def scenefilter_interlaced_fade(clip, start_frame, end_frame, use_vinverse=False, vinverse_amnt=1.5):
 	if use_vinverse:
 		fixed_fade_clip = haf.Vinverse(clip, amnt=vinverse_amnt)
@@ -16,7 +53,7 @@ def scenefilter_interlaced_fade(clip, start_frame, end_frame, use_vinverse=False
 
 def scenefilter_scrolling_text(clip, start_frame, end_frame):
 	scrolling_text = c.std.Trim(clip, start_frame, end_frame)
-	scrolling_text = haf.dec_txt60mc(scrolling_text, 0, tff=True)
+	scrolling_text = dec_txt60mc(scrolling_text, 0, tff=True)
 	return c.std.Trim(clip, 0, start_frame - 1) + c.std.Trim(scrolling_text, 0) + c.std.Trim(clip, end_frame + 1)
 
 def decomb_clip_mask(clip, mask_file, start_frame, end_frame):
@@ -105,7 +142,10 @@ src = decomb_clip_mask(src, 'prev_waves.png', 33735, 33735)
 src = decomb_clip_mask(src, 'prev_waves.png', 33746, 33746)
 src = decomb_clip_mask(src, 'prev_waves.png', 33750, 33750)
 src = decomb_clip_mask(src, 'prev_waves.png', 33761, 33761)
-#src = scenefilter_scrolling_text(src, 33548, 33762) #TODO: Fix artifacting introduced by dec_txt60mc near the waves
+test2 = scenefilter_scrolling_text(src, 33548, 33762) #TODO: Fix artifacting introduced by dec_txt60mc near the waves
+test1 = c.std.Trim(src, 0, 33547) + vs.core.vivtc.VDecimate(c.std.Trim(src, 33548, 33762)) + c.std.Trim(src, 33763)
+test2.set_output();
+
 #src_r1 = scenefilter_scrolling_text(src_r1, 33548, 33762)
 
 src = rektlvls(src, colnum=[715], colval=[-2])
@@ -128,4 +168,4 @@ src_fixed_bottom_row = src.std.MaskedMerge(src_fixed_bottom_row, mask_r1_missing
 src = c.std.Trim(src, 0, 2397) + c.std.Trim(src_fixed_bottom_row, 2397 + 1, 31267) + c.std.Trim(src, 31267 + 1, 33187) + c.std.Trim(src_fixed_bottom_row, 33187 + 1)
 
 src = c.std.AssumeFPS(clip=src, fpsnum=24000, fpsden=1001)
-src.set_output()
+#src.set_output()
