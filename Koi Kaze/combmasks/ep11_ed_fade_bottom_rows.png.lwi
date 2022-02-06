@@ -1,13 +1,13 @@
 <LSMASHWorksIndexVersion=0.0.2.0>
 <LibavReaderIndexFile=16>
-<InputFilePath>./combmasks/prev_nanoka.png</InputFilePath>
-<FileSize=2187>
-<FileHash=0x1d43e2f2b795f03e>
+<InputFilePath>./combmasks/ep11_ed_fade_bottom_rows.png</InputFilePath>
+<FileSize=2846>
+<FileHash=0x309f7c45ff25722e>
 <LibavReaderIndex=0x00000100,1,png_pipe>
 <ActiveVideoStreamIndex>+0000000000</ActiveVideoStreamIndex>
 <ActiveAudioStreamIndex>-0000000002</ActiveAudioStreamIndex>
 <StreamInfo=0,0>
-Codec=61,TimeBase=1/25,Width=720,Height=480,Format=rgba,ColorSpace=2
+Codec=61,TimeBase=1/25,Width=854,Height=480,Format=rgba,ColorSpace=2
 </StreamInfo>
 Index=0,POS=0,PTS=0,DTS=0,EDI=0
 Key=1,Pic=0,POC=0,Repeat=1,Field=0
@@ -17,7 +17,7 @@ Key=1,Pic=0,POC=0,Repeat=1,Field=0
 POS=0,TS=0,Flags=1,Size=0,Distance=0
 </StreamIndexEntries>
 <ExtraDataList=0,0,1>
-Size=0,Codec=61,4CC=0x0,Width=720,Height=480,Format=rgba,BPS=0
+Size=0,Codec=61,4CC=0x0,Width=854,Height=480,Format=rgba,BPS=0
 
 </ExtraDataList>
 </LibavReaderIndexFile>
