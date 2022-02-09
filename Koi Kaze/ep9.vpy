@@ -56,6 +56,7 @@ src = merge_clips_mask(src_title_fix_telecined_fade, src, 'ep9_title.png', 2568,
 src_vinversed = haf.Vinverse(src, amnt=1)
 src = merge_clips_mask(src, src_vinversed, 'ep9_title.png', 2568, 2613)
 src = scenefilter_interlaced_fade(src, 2778, 2790, True, 2.5)
+src = scenefilter_interlaced_fade(src, 2842, 2850, True, 3.5)
 src = scenefilter_interlaced_fade(src, 10172, 10231)
 src = scenefilter_interlaced_fade(src, 16556, 16689)
 src = scenefilter_interlaced_fade(src, 20516, 20539)
