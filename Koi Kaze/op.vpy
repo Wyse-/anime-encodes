@@ -21,8 +21,8 @@ src_r1 = c.fh.FieldHint(clip=src_r1, tff=1, matches=wobbly_matches)
 
 section0 = src[0:]
 src = c.std.Splice(mismatch=True, clips=[section0,])
-section0 = src_r1[0:]
-src_r1 = c.std.Splice(mismatch=True, clips=[section0,])
+section0_r1 = src_r1[0:]
+src_r1 = c.std.Splice(mismatch=True, clips=[section0_r1,])
 
 dec0 = c.std.SelectEvery(clip=src[0:100], cycle=5, offsets=[0,1,2,4,])
 dec100 = c.std.SelectEvery(clip=src[100:105], cycle=5, offsets=[0,2,3,4,])
