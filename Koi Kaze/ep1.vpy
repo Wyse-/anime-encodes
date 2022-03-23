@@ -21,7 +21,7 @@ src_r1 = c.d2v.Source('d2v/R1_DVD/DVD_01.d2v')
 src_r1_dvd_03 = c.d2v.Source('d2v/R1_DVD/DVD_03.d2v')
 src_r1 = src_r1.resize.Point(range_in=1, range=0)
 src_r1_dvd_03 = src_r1_dvd_03.resize.Point(range_in=1, range=0)
-src_r1 = c.std.Splice(clips=[src_r1[3000:3075],src_r1[3000:39021],src_r1_dvd_03[175774:178441],src_r1[41688:42243]])
+src_r1 = c.std.Splice(clips=[src_r1[3000:3075],src_r1[3000:39021],src_r1_dvd_03[175774:178441],src_r1[41688:42238],src_r1[3000:3005]])
 src_r1 = c.fh.FieldHint(clip=src_r1, tff=1, matches=wobbly_matches)
 
 section0 = src[0:]
