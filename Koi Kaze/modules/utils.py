@@ -33,3 +33,6 @@ def change_frame_brightness(clip, frame, brightness):
 
 def change_frames_brightness(clip, start_frame, end_frame, brightness):
 	return c.std.Trim(clip, 0, start_frame - 1) + c.std.Trim(adjust.Tweak(clip, bright=brightness), start_frame, end_frame) + c.std.Trim(clip, end_frame + 1)
+
+def clip_replace_frame(clipa, clipb, frame):
+	return c.std.Trim(clipa, 0, frame - 1) + c.std.Trim(clipb, frame, frame) + c.std.Trim(clipa, frame + 1)
