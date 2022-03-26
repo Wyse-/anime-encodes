@@ -2,6 +2,7 @@ import sys
 import vapoursynth as vs
 import havsfunc as haf
 import lvsfunc as lvf
+import adjust
 
 this = sys.modules[__name__]
 this.c = None
@@ -26,3 +27,9 @@ def merge_clips_mask(clip1, clip2, mask_file, start_frame, end_frame):
 	combmask = c.resize.Point(c.lsmas.LWLibavSource(source='./combmasks/' + mask_file), format=vs.GRAY8, matrix_s="170m").std.Binarize(180, v0=0, v1=255)
 	merged_clip = c.std.MaskedMerge(clip1, clip2, combmask)
 	return c.std.Trim(clip1, 0, start_frame - 1) + c.std.Trim(merged_clip, start_frame, end_frame) + c.std.Trim(clip1, end_frame + 1)
+
+def change_frame_brightness(clip, frame, brightness):
+	return c.std.Trim(clip, 0, frame - 1) + c.std.Trim(adjust.Tweak(clip, bright=brightness), frame, frame) + c.std.Trim(clip, frame + 1)
+
+def change_frames_brightness(clip, start_frame, end_frame, brightness):
+	return c.std.Trim(clip, 0, start_frame - 1) + c.std.Trim(adjust.Tweak(clip, bright=brightness), start_frame, end_frame) + c.std.Trim(clip, end_frame + 1)
