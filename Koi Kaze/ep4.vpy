@@ -14,7 +14,6 @@ c = vs.core
 utils.init(c)
 op = importlib.machinery.SourceFileLoader('op', './op.vpy').load_module()
 
-# 39318
 src = c.d2v.Source('d2v/R2J_DVD/DVD_02.d2v')
 src = c.std.Splice(clips=[src[87636:126954],])
 src = c.fh.FieldHint(clip=src, tff=1, matches=wobbly_matches)
