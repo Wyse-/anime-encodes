@@ -504,5 +504,5 @@ src_fixed_bottom_rows_full = c.fb.FillBorders(clip=src_fixed_bottom_rows_main, b
 src_fixed_bottom_rows_main = src_fixed_bottom_rows_main.std.MaskedMerge(src_fixed_bottom_rows_full, mask_r1_missing_pixels)
 src = c.std.Trim(src_fixed_bottom_rows_main, 0, 28878 - 1) + c.std.Trim(src_fixed_bottom_rows_ed, 28878, 31045) + c.std.Trim(src_fixed_bottom_rows_main, 31045 + 1)
 
-# src = op.src + src
+src = op.src + src
 src.set_output()
