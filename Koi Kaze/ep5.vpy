@@ -335,7 +335,7 @@ dec39160_r1 = c.std.SelectEvery(clip=src_r1[39160:39215], cycle=5, offsets=[1,2,
 dec39215_r1 = c.std.SelectEvery(clip=src_r1[39215:39260], cycle=5, offsets=[0,1,3,4,])
 dec39260_r1 = c.std.SelectEvery(clip=src_r1[39260:39320], cycle=5, offsets=[0,1,2,3,])
 
-interpolated_scrolling_text = lvf.deinterlace.ivtc_credits(src[38875:39160], 13)
+interpolated_scrolling_text = lvf.deinterlace.ivtc_credits(src[38875:39160], 30)
 decimated_scrolling_text = c.vivtc.VDecimate(src[38875:39160],)
 decimated_scrolling_text_r1 = c.vivtc.VDecimate(src_r1[38875:39160],)
 merged_scrolling_text = utils.merge_clips_mask(decimated_scrolling_text, interpolated_scrolling_text, 'prev_scrolling_text.png', 23, 195)
