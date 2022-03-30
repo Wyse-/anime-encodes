@@ -40,3 +40,6 @@ def clip_replace_frame(clipa, clipb, frame):
 def replace_frame_mask(clip, mask_file, frame, frame_to_mask):
 	combmask = c.resize.Point(c.lsmas.LWLibavSource(source='./combmasks/' + mask_file), format=vs.GRAY8, matrix_s="170m").std.Binarize(180, v0=0, v1=255)
 	return c.std.Trim(clip, 0, frame - 1) + c.std.MaskedMerge(c.std.Trim(clip, frame, frame), c.std.Trim(clip, frame_to_mask, frame_to_mask), combmask) + c.std.Trim(clip, frame + 1)
+
+def change_frame_brightness_and_hue(clip, frame, brightness, hue = 0):
+	return c.std.Trim(clip, 0, frame - 1) + c.std.Trim(adjust.Tweak(clip, bright=brightness, hue=hue), frame, frame) + c.std.Trim(clip, frame + 1)
