@@ -497,4 +497,5 @@ src_fixed_bottom_rows_ed_variant = rektlvls(src, rownum=[478, 479], rowval=[16, 
 src_no_fix_bottom_rows_ed_variant = src
 src = c.std.Trim(src_fixed_bottom_rows_main, 0, 28865 - 1) + c.std.Trim(src_no_fix_bottom_rows_ed_variant, 28865, 28901) + c.std.Trim(src_fixed_bottom_rows_ed_variant, 28901 + 1, 28976) + c.std.Trim(src_fixed_bottom_rows_main, 28976 + 1)
 
+src = op.src + src
 src.set_output()
