@@ -314,7 +314,7 @@ src = utils.scenefilter_interlaced_fade(src, 26395, 26443)
 src = utils.scenefilter_interlaced_fade(src, 28817, 28948)
 src = utils.scenefilter_interlaced_fade(src, 30939, 31005)
 src = utils.scenefilter_interlaced_fade(src, 31006, 31014, True)
-src = utils.scenefilter_interlaced_fade(src, 31098, 31099)
+src = utils.scenefilter_interlaced_fade(src, 31098, 31110)
 
 src_r1 = utils.scenefilter_interlaced_fade(src_r1, 167, 212)
 src_r1 = utils.scenefilter_interlaced_fade(src_r1, 9935, 9982)
@@ -325,7 +325,7 @@ src_r1 = utils.scenefilter_interlaced_fade(src_r1, 26395, 26443)
 src_r1 = utils.scenefilter_interlaced_fade(src_r1, 28817, 28948)
 src_r1 = utils.scenefilter_interlaced_fade(src_r1, 30939, 31005)
 src_r1 = utils.scenefilter_interlaced_fade(src_r1, 31006, 31014, True)
-src_r1 = utils.scenefilter_interlaced_fade(src_r1, 31098, 31099)
+src_r1 = utils.scenefilter_interlaced_fade(src_r1, 31098, 31110)
 
 src = rektlvls(src, colnum=[715], colval=[-2])
 
@@ -341,5 +341,5 @@ src_fixed_bottom_rows_main = rektlvls(src, rownum=[478, 479], rowval=[7, 7])
 src_fixed_bottom_rows_ed = rektlvls(src, rownum=[478, 479], rowval=[4, 4])
 src = c.std.Trim(src_fixed_bottom_rows_main, 0, 28878 - 1) + c.std.Trim(src_fixed_bottom_rows_ed, 28878, 31045) + c.std.Trim(src_fixed_bottom_rows_main, 31045 + 1)
 
-src = op.src + src
+# src = op.src + src
 src.set_output()
