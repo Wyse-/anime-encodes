@@ -396,7 +396,6 @@ src = utils.scenefilter_interlaced_fade(src, 28879, 28950, True, 0.5)
 src = utils.scenefilter_interlaced_fade(src, 30940, 31003)
 src = utils.scenefilter_interlaced_fade(src, 31004, 31015, True)
 src = utils.scenefilter_interlaced_fade(src, 31100, 31111)
-src = utils.scenefilter_interlaced_fade(src, 31100, 31111)
 
 src_r1 = utils.scenefilter_interlaced_fade(src_r1, 83, 98)
 src_r1 = utils.scenefilter_interlaced_fade(src_r1, 167, 213)
