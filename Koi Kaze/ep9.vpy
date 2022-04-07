@@ -313,8 +313,8 @@ dec39290_r1 = c.std.SelectEvery(clip=src_r1[39290:39350], cycle=5, offsets=[0,1,
 test = src[475:580]
 dec475 = c.vivtc.VDecimate(src[475:580], ovr="vdecimate_overrides/ep9_dec475.txt")
 dec18940 = c.vivtc.VDecimate(src[18940:19030])
-dec475_r1 = c.vivtc.VDecimate(src_r1[475:580])
-dec18940_r1 = c.vivtc.VDecimate(src_r1[18940:19030])
+dec475_r1 = c.vivtc.VDecimate(src[475:580], clip2=src_r1[475:580], ovr="vdecimate_overrides/ep9_dec475.txt")
+dec18940_r1 = c.vivtc.VDecimate(src[18940:19030], clip2=src_r1[18940:19030])
 
 interpolated_scrolling_text = lvf.deinterlace.ivtc_credits(untouched_scrolling_text, 29)
 decimated_scrolling_text = c.vivtc.VDecimate(src[38905:39185],)
