@@ -243,10 +243,10 @@ dec39185_r1 = c.std.SelectEvery(clip=src_r1[39185:39260], cycle=5, offsets=[0,2,
 dec39260_r1 = c.std.SelectEvery(clip=src_r1[39260:39320], cycle=5, offsets=[0,1,2,3,])
 
 dec34520 = c.vivtc.VDecimate(src[34520:34610], ovr='vdecimate_overrides/ep6_dec34520.txt')
-dec34520_r1 = c.vivtc.VDecimate(src_r1[34520:34610], ovr='vdecimate_overrides/ep6_dec34520.txt')
+dec34520_r1 = c.vivtc.VDecimate(src[34520:34610], clip2=src_r1[34520:34610], ovr='vdecimate_overrides/ep6_dec34520.txt')
 interpolated_scrolling_text = lvf.deinterlace.ivtc_credits(src[38875:39115], 29)
-decimated_scrolling_text = c.vivtc.VDecimate(src[38875:39115],)
-decimated_scrolling_text_r1 = c.vivtc.VDecimate(src_r1[38875:39115],)
+decimated_scrolling_text = c.vivtc.VDecimate(src[38875:39115])
+decimated_scrolling_text_r1 = c.vivtc.VDecimate(src[38875:39115], clip2=src_r1[38875:39115])
 merged_scrolling_text = utils.merge_clips_mask(decimated_scrolling_text, interpolated_scrolling_text, 'prev_scrolling_text.png', 23, 177)
 
 src = c.std.Splice(mismatch=True, clips=[dec0,dec410,dec700,dec1010,dec1030,dec1035,dec1055,dec1065,dec1135,dec1175,dec3065,dec3195,dec3515,dec3875,dec4460,dec5230,dec5235,dec6865,dec6880,dec6925,dec7100,dec7180,dec7590,dec7595,dec7700,dec8175,dec8375,dec8520,dec8690,dec10465,dec10470,dec10880,dec11230,dec11460,dec11580,dec12075,dec12195,dec13130,dec13490,dec13495,dec18945,dec19135,dec19180,dec19260,dec19905,dec19910,dec20440,dec20620,dec21160,dec21250,dec21590,dec21770,dec21775,dec22405,dec22555,dec22780,dec22930,dec23125,dec23215,dec23560,dec23710,dec24625,dec24775,dec24895,dec25060,dec25260,dec25325,dec25330,dec25670,dec25780,dec25785,dec27920,dec28270,dec28275,dec28425,dec28540,dec28545,dec28935,dec29005,dec29010,dec29650,dec29665,dec29685,dec29705,dec29710,dec29725,dec29745,dec29770,dec29885,dec29935,dec30395,dec30400,dec30510,dec34045,dec34055,dec34060,dec34330,dec34520,dec34610,dec35100,dec35185,dec38810,merged_scrolling_text,dec39115,dec39155,dec39160,dec39185,dec39260,])

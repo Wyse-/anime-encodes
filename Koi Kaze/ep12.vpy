@@ -422,11 +422,11 @@ dec42125_r1 = c.std.SelectEvery(clip=src_r1[42125:42175], cycle=5, offsets=[0,1,
 dec42175_r1 = c.std.SelectEvery(clip=src_r1[42175:42260], cycle=5, offsets=[0,1,3,4,])
 dec42260_r1 = c.std.SelectEvery(clip=src_r1[42260:42320], cycle=5, offsets=[0,1,2,3,])
 
-dec20390 = c.vivtc.VDecimate(src[20390:20610],)
-dec20390_r1 = c.vivtc.VDecimate(src_r1[20390:20610],)
+dec20390 = c.vivtc.VDecimate(src[20390:20610])
+dec20390_r1 = c.vivtc.VDecimate(src[20390:20610], clip2=src_r1[20390:20610])
 interpolated_scrolling_text = lvf.deinterlace.ivtc_credits(untouched_scrolling_text, 29)
-decimated_scrolling_text = c.vivtc.VDecimate(src[41875:42125],)
-decimated_scrolling_text_r1 = c.vivtc.VDecimate(src_r1[41875:42125],)
+decimated_scrolling_text = c.vivtc.VDecimate(src[41875:42125])
+decimated_scrolling_text_r1 = c.vivtc.VDecimate(src[41875:42125], clip2=src_r1[41875:42125])
 merged_scrolling_text = utils.merge_clips_mask(decimated_scrolling_text, interpolated_scrolling_text, 'prev_scrolling_text.png', 23, 187)
 
 src = c.std.Splice(mismatch=True, clips=[dec0,dec210,dec230,dec410,dec415,dec515,dec650,dec655,dec720,dec780,dec855,dec960,dec990,dec1250,dec1350,dec2240,dec2290,dec2295,dec2385,dec2490,dec2655,dec2815,dec2855,dec2890,dec3040,dec3045,dec3240,dec3485,dec3490,dec4630,dec4680,dec4735,dec4825,dec4975,dec5200,dec5320,dec5415,dec5420,dec5470,dec5670,dec6105,dec6830,dec7720,dec8640,dec8960,dec9115,dec9120,dec9320,dec9910,dec9915,dec10015,dec10045,dec10070,dec10100,dec10325,dec10350,dec10635,dec10750,dec10865,dec11095,dec11100,dec11285,dec11420,dec11490,dec11495,dec11570,dec11640,dec11645,dec11815,dec12025,dec12635,dec12640,dec13290,dec13550,dec13555,dec13760,dec14215,dec14220,dec14525,dec14995,dec15120,dec15125,dec15215,dec15260,dec15770,dec15830,dec16205,dec16265,dec16430,dec16550,dec17245,dec17845,dec18025,dec18100,dec18415,dec18490,dec18615,dec18745,dec18930,dec19270,dec19275,dec19650,dec19780,dec20025,dec20390,dec20610,dec20640,dec20710,dec20905,dec20910,dec20975,dec21250,dec21255,dec21335,dec21745,dec21850,dec22040,dec22105,dec22400,dec22545,dec22850,dec22855,dec22990,dec23140,dec23220,dec23325,dec23435,dec23440,dec23840,dec24125,dec24175,dec24180,dec25035,dec25465,dec25610,dec25705,dec25905,dec26155,dec26640,dec26655,dec26770,dec26875,dec27660,dec27850,dec27855,dec28570,dec29085,dec29235,dec29380,dec29470,dec29680,dec29700,dec29705,dec29795,dec29945,dec30755,dec30995,dec31505,dec31610,dec31670,dec31805,dec31915,dec32340,dec32345,dec32650,dec33220,dec33325,dec33900,dec34190,dec34280,dec35165,dec35190,dec35300,dec35650,dec36655,dec36895,dec36940,dec36960,dec37000,dec37005,dec37015,dec37035,dec37425,dec37465,dec37585,dec37765,dec38430,dec38435,dec38585,dec39090,dec39885,dec40475,dec40800,dec41470,merged_scrolling_text,dec42125,dec42175,dec42260,])

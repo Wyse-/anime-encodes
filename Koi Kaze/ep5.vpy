@@ -336,8 +336,8 @@ dec39215_r1 = c.std.SelectEvery(clip=src_r1[39215:39260], cycle=5, offsets=[0,1,
 dec39260_r1 = c.std.SelectEvery(clip=src_r1[39260:39320], cycle=5, offsets=[0,1,2,3,])
 
 interpolated_scrolling_text = lvf.deinterlace.ivtc_credits(src[38875:39160], 30)
-decimated_scrolling_text = c.vivtc.VDecimate(src[38875:39160],)
-decimated_scrolling_text_r1 = c.vivtc.VDecimate(src_r1[38875:39160],)
+decimated_scrolling_text = c.vivtc.VDecimate(src[38875:39160])
+decimated_scrolling_text_r1 = c.vivtc.VDecimate(src[38875:39160], clip2=src_r1[38875:39160])
 merged_scrolling_text = utils.merge_clips_mask(decimated_scrolling_text, interpolated_scrolling_text, 'prev_scrolling_text.png', 23, 195)
 
 src = c.std.Splice(mismatch=True, clips=[dec0,dec1005,dec1275,dec2535,dec2620,dec2625,dec2745,dec2920,dec2925,dec3035,dec3765,dec3945,dec4515,dec4725,dec5400,dec5470,dec6070,dec6120,dec6125,dec6240,dec6360,dec6450,dec6555,dec6760,dec6765,dec6955,dec7110,dec7405,dec8005,dec8010,dec8235,dec8415,dec8480,dec8840,dec8915,dec9185,dec9430,dec9550,dec10000,dec10120,dec10490,dec11435,dec11555,dec11785,dec11790,dec11835,dec12270,dec13070,dec13780,dec13785,dec13935,dec14180,dec14440,dec14940,dec14945,dec15245,dec15300,dec16200,dec16290,dec16500,dec16860,dec16865,dec16885,dec16915,dec16960,dec17440,dec17965,dec19630,dec19645,dec19845,dec19850,dec20160,dec20305,dec20425,dec20605,dec20740,dec20890,dec21025,dec21645,dec22470,dec22475,dec22620,dec22920,dec22925,dec23075,dec23395,dec23410,dec24235,dec24535,dec24785,dec24875,dec25175,dec25545,dec25660,dec26370,dec26375,dec26490,dec26495,dec27515,dec27520,dec27955,dec28545,dec28655,dec28855,dec29280,dec29370,dec29655,dec29700,dec29805,dec29895,dec30015,dec30090,dec30210,dec30285,dec30320,dec30445,dec30450,dec30500,dec30570,dec30810,dec31170,dec31260,dec31425,dec31535,dec31540,dec31615,dec31795,dec31955,dec32030,dec32035,dec32105,dec32180,dec32185,dec32375,dec32450,dec32510,dec32515,dec32540,dec32975,dec33100,dec33175,dec34910,dec35000,dec35090,dec35285,dec35405,dec35540,dec36095,dec38810,merged_scrolling_text,dec39160,dec39215,dec39260,])

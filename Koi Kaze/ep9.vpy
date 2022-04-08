@@ -317,8 +317,8 @@ dec475_r1 = c.vivtc.VDecimate(src[475:580], clip2=src_r1[475:580], ovr="vdecimat
 dec18940_r1 = c.vivtc.VDecimate(src[18940:19030], clip2=src_r1[18940:19030])
 
 interpolated_scrolling_text = lvf.deinterlace.ivtc_credits(untouched_scrolling_text, 29)
-decimated_scrolling_text = c.vivtc.VDecimate(src[38905:39185],)
-decimated_scrolling_text_r1 = c.vivtc.VDecimate(src_r1[38905:39185],)
+decimated_scrolling_text = c.vivtc.VDecimate(src[38905:39185])
+decimated_scrolling_text_r1 = c.vivtc.VDecimate(src[38905:39185], clip2=src_r1[38905:39185])
 merged_scrolling_text = utils.merge_clips_mask(decimated_scrolling_text, interpolated_scrolling_text, 'prev_scrolling_text.png', 23, 196)
 
 src = c.std.Splice(mismatch=True, clips=[dec0,dec475,dec580,dec895,dec1015,dec1695,dec2235,dec2320,dec2400,dec2645,dec2650,dec2950,dec3130,dec3335,dec3405,dec3410,dec3490,dec3630,dec3860,dec3865,dec4035,dec4130,dec4135,dec4265,dec4380,dec4640,dec4685,dec4690,dec5730,dec5765,dec5785,dec5795,dec6285,dec6290,dec6620,dec7065,dec7330,dec7335,dec7355,dec7450,dec7455,dec7510,dec8565,dec8570,dec8630,dec8820,dec8830,dec8890,dec8980,dec9475,dec9880,dec10200,dec10205,dec10350,dec10440,dec10445,dec10640,dec10755,dec10815,dec11220,dec11310,dec11555,dec11560,dec12065,dec12325,dec12330,dec13660,dec13820,dec13910,dec13940,dec14010,dec14170,dec14355,dec14600,dec15095,dec15170,dec15385,dec15390,dec15430,dec15640,dec15645,dec15695,dec16245,dec16250,dec17035,dec17770,dec18940,dec19030,dec20200,dec20245,dec20455,dec20590,dec20755,dec21335,dec21340,dec21360,dec21375,dec21555,dec21730,dec23260,dec23610,dec23800,dec23980,dec24620,dec25555,dec25680,dec27150,dec27270,dec28395,dec28485,dec28555,dec29700,dec29850,dec29940,dec30525,dec30600,dec30720,dec30810,dec31050,dec31140,dec32865,dec33120,dec33615,dec33795,dec34035,dec34140,dec34230,dec34635,dec34905,dec34935,dec34965,dec34990,dec35005,dec35520,dec35525,dec35560,dec35620,dec38485,dec38840,merged_scrolling_text,dec39185,dec39290,])

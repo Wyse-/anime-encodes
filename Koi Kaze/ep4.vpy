@@ -358,8 +358,8 @@ dec39315_r1 = c.std.SelectEvery(clip=src_r1[39315:39318], cycle=5, offsets=[1,2,
 
 
 interpolated_scrolling_text = lvf.deinterlace.ivtc_credits(src[38875:39145], 13)
-decimated_scrolling_text = c.vivtc.VDecimate(src[38875:39145],)
-decimated_scrolling_text_r1 = c.vivtc.VDecimate(src_r1[38875:39145],)
+decimated_scrolling_text = c.vivtc.VDecimate(src[38875:39145])
+decimated_scrolling_text_r1 = c.vivtc.VDecimate(src[38875:39145], clip2=src_r1[38875:39145])
 merged_scrolling_text = utils.merge_clips_mask(decimated_scrolling_text, interpolated_scrolling_text, 'prev_scrolling_text.png', 10, 180)
 
 src = c.std.Splice(mismatch=True, clips=[dec0,dec835,dec1260,dec1265,dec1390,dec1525,dec1530,dec1640,dec1760,dec1880,dec2310,dec2355,dec2520,dec2610,dec3195,dec3630,dec3670,dec3790,dec3795,dec3995,dec4075,dec4080,dec4585,dec4630,dec4635,dec5085,dec5365,dec5640,dec5645,dec5790,dec6155,dec6625,dec6630,dec7685,dec7770,dec7820,dec7880,dec7900,dec8010,dec8015,dec8385,dec8885,dec8890,dec8915,dec9140,dec9310,dec9585,dec9680,dec9685,dec9750,dec9885,dec10050,dec10160,dec10235,dec10980,dec10985,dec11185,dec11325,dec11515,dec11520,dec11810,dec12100,dec12105,dec12405,dec12570,dec12575,dec12760,dec13245,dec13575,dec13755,dec14045,dec14430,dec14545,dec14940,dec14945,dec15675,dec16290,dec16540,dec16780,dec16785,dec17030,dec17550,dec18330,dec18575,dec18820,dec18825,dec19130,dec19175,dec19180,dec19380,dec20060,dec21575,dec21960,dec21965,dec22100,dec22345,dec22835,dec23080,dec23085,dec23140,dec23145,dec23550,dec23980,dec23985,dec24385,dec24820,dec24955,dec25760,dec26055,dec26175,dec26300,dec26305,dec26680,dec26795,dec26800,dec27105,dec27165,dec27360,dec27465,dec27705,dec27840,dec27905,dec28655,dec28660,dec28720,dec28870,dec29000,dec29170,dec29370,dec29735,dec30260,dec30365,dec30560,dec30580,dec30585,dec30695,dec30815,dec30910,dec30915,dec31280,dec32660,dec32915,dec32940,dec32960,dec33855,dec34415,dec34535,dec34605,dec34720,dec34985,dec34990,dec35260,dec35350,dec35440,dec35875,dec36060,dec38805,dec38810,merged_scrolling_text,dec39145,dec39180,dec39185,dec39215,dec39315,])

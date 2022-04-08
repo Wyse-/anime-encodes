@@ -341,10 +341,10 @@ dec39255_r1 = c.std.SelectEvery(clip=src_r1[39255:39315], cycle=5, offsets=[0,1,
 dec39315_r1 = c.std.SelectEvery(clip=src_r1[39315:39318], cycle=5, offsets=[1,2,3,4,])
 
 dec34525 = c.vivtc.VDecimate(src[34525:34650])
-dec34525_r1 = c.vivtc.VDecimate(src_r1[34525:34650])
+dec34525_r1 = c.vivtc.VDecimate(src[34525:34650], clip2=src_r1[34525:34650])
 interpolated_scrolling_text = lvf.deinterlace.ivtc_credits(src[38875:39170], 38)
-decimated_scrolling_text = c.vivtc.VDecimate(src[38875:39170],)
-decimated_scrolling_text_r1 = c.vivtc.VDecimate(src_r1[38875:39170],)
+decimated_scrolling_text = c.vivtc.VDecimate(src[38875:39170])
+decimated_scrolling_text_r1 = c.vivtc.VDecimate(src[38875:39170], clip2=src_r1[38875:39170])
 merged_scrolling_text = utils.merge_clips_mask(decimated_scrolling_text, interpolated_scrolling_text, 'prev_scrolling_text.png', 30, 202)
 
 src = c.std.Splice(mismatch=True, clips=[dec0,dec205,dec210,dec390,dec450,dec455,dec570,dec960,dec1035,dec1215,dec1290,dec2130,dec2185,dec2190,dec2410,dec2465,dec2470,dec2800,dec2855,dec2860,dec3290,dec3420,dec3480,dec3690,dec3790,dec3795,dec3840,dec4200,dec4410,dec4490,dec4580,dec4585,dec4735,dec5095,dec6140,dec6320,dec6655,dec6810,dec7140,dec7390,dec7540,dec7690,dec8745,dec9065,dec9145,dec9235,dec9240,dec9340,dec9670,dec9850,dec9935,dec9985,dec10040,dec10150,dec10455,dec10500,dec10530,dec10555,dec10605,dec10680,dec10880,dec10945,dec10980,dec11175,dec11270,dec11295,dec11300,dec11435,dec11580,dec11660,dec11795,dec11895,dec12420,dec12450,dec12555,dec14010,dec14115,dec14205,dec14265,dec14445,dec15255,dec15380,dec15655,dec16045,dec16085,dec16090,dec16415,dec16590,dec16595,dec17795,dec17850,dec18260,dec18265,dec18555,dec18750,dec18840,dec19110,dec19200,dec19260,dec19325,dec20000,dec20350,dec20445,dec20450,dec20570,dec20805,dec20895,dec21455,dec21595,dec21685,dec21690,dec21775,dec21885,dec21920,dec21930,dec21960,dec22485,dec22575,dec22680,dec22830,dec22950,dec23085,dec24540,dec24580,dec25805,dec25810,dec27305,dec27355,dec27495,dec28400,dec28485,dec28925,dec30095,dec30580,dec30630,dec30705,dec30710,dec31430,dec31730,dec32610,dec33630,dec33670,dec34215,dec34500,dec34505,dec34510,dec34525,dec34650,dec35100,dec35410,dec36085,dec38805,dec38810,merged_scrolling_text,dec39170,dec39255,dec39315,])
